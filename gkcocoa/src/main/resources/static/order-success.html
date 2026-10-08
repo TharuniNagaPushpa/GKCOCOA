@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Confirmed | GKCocoa</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf5;
+            color: #3b2115;
+        }
+
+        nav {
+            height: 70px;
+            padding: 0 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #3b2115;
+            color: white;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #d9a15b;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .success {
+            max-width: 650px;
+            margin: 100px auto;
+            padding: 45px;
+            background: white;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(60, 30, 10, 0.12);
+        }
+
+        .success-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #70594d;
+            line-height: 1.6;
+        }
+
+        .order-number {
+            margin: 25px 0;
+            padding: 15px;
+            background: #fff4e8;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .home-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 13px 28px;
+            background: #3b2115;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .home-btn:hover {
+            background: #9a5e28;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        GK<span>Cocoa</span>
+    </div>
+
+    <a href="index.html">Home</a>
+
+</nav>
+
+
+<section class="success">
+
+    <div class="success-icon">✓</div>
+
+    <h1>Order Confirmed!</h1>
+
+    <p>
+        Thank you for shopping with GKCocoa.
+        Your order has been successfully placed.
+    </p>
+
+    <div class="order-number">
+        Order ID: <span id="orderId"></span>
+    </div>
+
+    <p>
+        We will process your order and contact you
+        with the delivery details.
+    </p>
+
+    <a href="index.html" class="home-btn">
+        Continue Shopping
+    </a>
+
+</section>
+
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    const orderIdElement = document.getElementById("orderId");
+
+    if (orderIdElement && id) {
+        orderIdElement.textContent =
+            "GK" + String(id).padStart(6, "0");
+
+    }
+
+</script>
+
+</body>
+
+</html>

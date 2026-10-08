@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GKCocoa | Premium Cocoa</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf5;
+            color: #3b2115;
+        }
+
+        nav {
+            height: 70px;
+            padding: 0 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #3b2115;
+            color: white;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #d9a15b;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .shop-btn {
+            padding: 10px 18px;
+            border: 1px solid #d9a15b;
+            border-radius: 20px;
+        }
+
+        .hero {
+            min-height: 560px;
+            display: flex;
+            align-items: center;
+            padding: 60px 8%;
+            color: white;
+            background:
+                    linear-gradient(90deg, rgba(45, 23, 12, .95), rgba(45, 23, 12, .45)),
+                    url("https://images.unsplash.com/photo-1575377427642-087cf684f29d?auto=format&fit=crop&w=1600&q=80")
+                    center/cover;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 58px;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #e2ad68;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: #c58b4b;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .section {
+            padding: 70px 8%;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .intro {
+            max-width: 700px;
+            margin: auto;
+            line-height: 1.7;
+            color: #70594d;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(60, 30, 10, .12);
+            text-align: left;
+        }
+
+        .product img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 22px;
+        }
+
+        .product h3 {
+            margin-bottom: 10px;
+        }
+
+        .product p {
+            color: #80695c;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #9a5e28;
+        }
+
+        .product-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background: #3b2115;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .product-btn:hover {
+            background: #9a5e28;
+        }
+
+        .features {
+            background: #f2e5d7;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .feature p {
+            margin-top: 10px;
+            color: #70594d;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #29160e;
+            color: white;
+            text-align: center;
+            padding: 35px;
+        }
+
+        footer p {
+            margin-top: 8px;
+            color: #cdb8a8;
+        }
+
+        @media (max-width: 800px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .products,
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">GK<span>Cocoa</span></div>
+
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="track-order.html">Track Order</a></li>
+    </ul>
+
+    <a href="#products" class="shop-btn">Shop Now</a>
+</nav>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>Pure Cocoa.<br><span>Rich in Nature.</span></h1>
+
+        <p>
+            Premium quality cocoa products carefully sourced
+            and delivered from farm to your doorstep.
+        </p>
+
+        <a href="#products" class="btn">Explore Products</a>
+    </div>
+</section>
+
+<section class="section" id="about">
+    <h2>Welcome to GKCocoa</h2>
+
+    <p class="intro">
+        We bring carefully selected cocoa products from trusted
+        sources, focusing on quality, freshness and customer satisfaction.
+    </p>
+</section>
+
+<section class="section" id="products">
+
+    <h2>Our Products</h2>
+
+    <p class="intro">
+        Discover our selection of premium cocoa products.
+    </p>
+
+    <div class="products">
+
+        <div class="product">
+            <img src="/images/premium-cocoa.jpg"
+                 alt="Premium cocoa beans">
+            <div class="product-info">
+                <h3>Premium Cocoa Beans</h3>
+                <p>Carefully selected high-quality cocoa beans.</p>
+                <div class="price">₹299 / kg</div>
+                <a href="product1.html" class="product-btn">View Product</a>
+            </div>
+        </div>
+
+        <div class="product">
+            <img src="/images/fermented-cocoa.jpg"
+                 alt="Fermented cocoa beans">
+            <div class="product-info">
+                <h3>Fermented Cocoa Beans</h3>
+                <p>Naturally fermented beans prepared for rich cocoa flavour.</p>
+                <p>Rich cocoa with a deep natural flavour.</p>
+                <div class="price">₹399 / kg</div>
+                <a href="product2.html" class="product-btn">View Product</a>
+            </div>
+        </div>
+
+        <div class="product">
+            <img src="/images/dried-cocoa.jpg"
+                 alt="Dried cocoa beans">
+            <div class="product-info">
+                <h3>Dried Cocoa Beans</h3>
+                <p>Properly dried cocoa beans suitable for processing.</p>
+                <div class="price">₹249 / kg</div>
+                <a href="product3.html" class="product-btn">View Product</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="section features">
+
+    <h2>Why GKCocoa?</h2>
+
+    <div class="feature-grid">
+
+        <div class="feature">
+            <h3>Quality First</h3>
+            <p>
+                Carefully selected cocoa products with quality
+                as our priority.
+            </p>
+        </div>
+
+        <div class="feature">
+            <h3>Farm to Customer</h3>
+            <p>
+                We focus on maintaining freshness throughout
+                the supply process.
+            </p>
+        </div>
+
+        <div class="feature">
+            <h3>Secure Shopping</h3>
+            <p>
+                Customer accounts and payments will use
+                secure technologies.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<footer id="contact">
+    <h3>GKCocoa</h3>
+    <p>Premium Cocoa Products</p>
+    <p>© 2026 GKCocoa. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

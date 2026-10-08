@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Seller Dashboard | GKCocoa</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf5;
+            color: #3b2115;
+        }
+
+        nav {
+            height: 70px;
+            padding: 0 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #3b2115;
+            color: white;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #d9a15b;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .orders-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(60, 30, 10, 0.1);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #3b2115;
+            color: white;
+        }
+
+        tr:hover {
+            background: #fff4e8;
+        }
+
+        select {
+            padding: 8px;
+            border: 1px solid #d6c4b8;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        GK<span>Cocoa</span>
+    </div>
+
+    <form action="/logout" method="post">
+        <button type="submit"
+                style="padding:10px 16px; border:none; border-radius:6px; cursor:pointer;">
+            Logout
+        </button>
+    </form>
+
+</nav>
+
+
+<div class="dashboard">
+
+    <h1>Customer Orders</h1>
+
+    <div class="orders-box">
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>Order ID</th>
+                <th>Full Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Total Amount</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Pincode</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+
+
+            <tbody id="ordersTable">
+
+            </tbody>
+
+        </table>
+
+
+        <div id="message" class="empty">
+            Loading orders...
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    async function loadOrders() {
+
+        try {
+
+            const response = await fetch("/api/orders");
+
+            if (!response.ok) {
+                throw new Error("Could not load orders");
+            }
+
+            const orders = await response.json();
+
+            const table = document.getElementById("ordersTable");
+            const message = document.getElementById("message");
+
+
+            if (orders.length === 0) {
+
+                table.innerHTML = "";
+
+                message.textContent = "No orders yet.";
+
+                return;
+            }
+
+
+            message.style.display = "none";
+
+
+            table.innerHTML = orders.map(order => `
+
+            <tr>
+
+                <td>
+                    GK${String(order.id).padStart(6, "0")}
+                </td>
+
+                <td>
+                    ${order.fullName || ""}
+                </td>
+
+                <td>
+                    ${order.phone || ""}
+                </td>
+
+                <td>
+                    ${order.email || ""}
+                </td>
+                                <td>
+    ₹${order.totalAmount || 0}
+</td>
+
+                <td>
+                    ${order.address || ""}
+                </td>
+
+                <td>
+                    ${order.city || ""}
+                </td>
+
+                <td>
+                    ${order.pincode || ""}
+                </td>
+
+                <td>
+
+                    <select onchange="updateStatus(${order.id}, this.value)">
+
+                        <option value="Pending"
+                            ${order.status === "Pending" ? "selected" : ""}>
+                            Pending
+                        </option>
+
+                        <option value="Confirmed"
+                            ${order.status === "Confirmed" ? "selected" : ""}>
+                            Confirmed
+                        </option>
+
+                        <option value="Shipped"
+                            ${order.status === "Shipped" ? "selected" : ""}>
+                            Shipped
+                        </option>
+
+                        <option value="Delivered"
+                            ${order.status === "Delivered" ? "selected" : ""}>
+                            Delivered
+                        </option>
+
+                    </select>
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.getElementById("message").textContent =
+                "Unable to load orders.";
+
+        }
+
+    }
+
+
+    async function updateStatus(id, status) {
+
+        try {
+
+            const response = await fetch(
+                `/api/orders/${id}/status?status=${encodeURIComponent(status)}`,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error("Status update failed");
+
+            }
+
+
+            alert("Order status updated successfully");
+
+
+            // Reload orders so the saved status is shown
+            loadOrders();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Could not update order status");
+
+        }
+
+    }
+
+
+    loadOrders();
+
+</script>
+
+</body>
+
+</html>

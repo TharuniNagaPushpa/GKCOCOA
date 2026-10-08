@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout | GKCocoa</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf5;
+            color: #3b2115;
+        }
+
+        nav {
+            height: 70px;
+            padding: 0 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #3b2115;
+            color: white;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #d9a15b;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .checkout-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .checkout-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(60, 30, 10, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d6c4b8;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .order-summary {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .total {
+            margin-top: 15px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .place-order {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            background: #3b2115;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .place-order:hover {
+            background: #9a5e28;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        GK<span>Cocoa</span>
+    </div>
+
+    <a href="index.html">Home</a>
+
+</nav>
+
+
+<div class="checkout-container">
+
+    <h1>Checkout</h1>
+
+    <div class="checkout-box">
+
+        <form id="checkoutForm">
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" required>
+            </div>
+
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="phone" required>
+            </div>
+
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required>
+            </div>
+
+
+            <div class="form-group">
+                <label>Delivery Address</label>
+                <textarea id="address" required></textarea>
+            </div>
+
+
+            <div class="form-group">
+                <label>City</label>
+                <input type="text" id="city" required>
+            </div>
+
+
+            <div class="form-group">
+                <label>Pincode</label>
+                <input type="text" id="pincode" required>
+            </div>
+
+
+            <div class="order-summary">
+
+                <h2>Order Summary</h2>
+
+                <div id="orderItems"></div>
+
+                <div class="total">
+                    Total: <span id="orderTotal">₹0</span>
+                </div>
+
+            </div>
+
+
+            <button type="submit" class="place-order">
+                Confirm Order
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="/cart.js"></script>
+<script>
+    document.getElementById("checkoutForm").addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const cart = JSON.parse(localStorage.getItem("gkcocoaCart") || "[]");
+
+        let total = 0;
+
+        cart.forEach(item => {
+            total += Number(item.price) * Number(item.quantity);
+        });
+
+        const order = {
+            fullName: document.getElementById("name").value,
+            phone: document.getElementById("phone").value,
+            email: document.getElementById("email").value,
+            address: document.getElementById("address").value,
+            city: document.getElementById("city").value,
+            pincode: document.getElementById("pincode").value,
+            totalAmount: total
+        };
+
+        try {
+
+            const response = await fetch("/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(order)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.log("STATUS:", response.status);
+                console.log("SERVER RESPONSE:", errorText);
+                alert("Server error: " + response.status);
+                return;
+            }
+
+            const savedOrder = await response.json();
+
+            localStorage.removeItem("gkcocoaCart");
+
+            window.location.href =
+                `/order-success.html?id=${savedOrder.id}`;
+
+        } catch (error) {
+
+            console.error(error);
+            alert("Something went wrong. Please try again.");
+
+        }
+
+    });
+</script>
+<script>
+
+    function loadCheckout() {
+
+        const cart =
+            JSON.parse(localStorage.getItem("gkcocoaCart") || "[]");
+
+        const container =
+            document.getElementById("orderItems");
+
+        const totalElement =
+            document.getElementById("orderTotal");
+
+        let total = 0;
+
+        if (cart.length === 0) {
+
+            container.innerHTML = "<p>Your cart is empty.</p>";
+
+            totalElement.textContent = "₹0";
+
+            return;
+        }
+
+        container.innerHTML = cart.map(item => {
+
+            const itemTotal =
+                item.price * item.quantity;
+
+            total += itemTotal;
+
+            return `
+                <p style="margin-top:10px;">
+                    ${item.name} × ${item.quantity}
+                    — ₹${itemTotal}
+                </p>
+            `;
+
+        }).join("");
+
+        totalElement.textContent = `₹${total}`;
+    }
+
+
+    loadCheckout();
+
+</script>
+
+</body>
+
+</html>
